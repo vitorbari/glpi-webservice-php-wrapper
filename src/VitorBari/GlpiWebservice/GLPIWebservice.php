@@ -11,6 +11,8 @@ class GLPIWebservice
 {
 
     /**
+     * GLPI Webservice SOAP endpoint
+     *
      * @var string
      */
     protected $endpoint = 'http://localhost/plugins/webservices/soap.php';
@@ -42,6 +44,7 @@ class GLPIWebservice
 
     /**
      * GLPIWebservice constructor.
+     *
      * @param null $endpoint
      */
     public function __construct($endpoint = NULL)
@@ -53,24 +56,35 @@ class GLPIWebservice
         $this->client = new Client($this->endpoint);
     }
 
+    /**
+     * Get current session
+     *
+     * @return array
+     * @throws NotAuthenticatedException
+     */
     public function getSession()
     {
-        if (empty($this->session) || !is_array($this->session)) {
-            throw new NotAuthenticatedException();
-        }
+        $this->isLogged(TRUE);
 
         // Return the session except the hash
         $session = $this->session;
 
         if(array_key_exists('session', $session)) {
             unset($session['session']);
-        } else {
-            throw new NotAuthenticatedException();
         }
 
         return $session;
     }
 
+    /**
+     * Authenticate a user
+     *
+     * @param $glpi_user
+     * @param $glpi_pass
+     * @param null $ws_user
+     * @param null $ws_pass
+     * @return $this
+     */
     public function auth($glpi_user, $glpi_pass, $ws_user = NULL, $ws_pass = NULL)
     {
         $args = array(
@@ -92,7 +106,9 @@ class GLPIWebservice
         return $this;
     }
 
+    //
     // Not authenticated methods
+    //
 
     /**
      * Simple ping test method
@@ -150,7 +166,7 @@ class GLPIWebservice
     public function listEntities()
     {
         return $this->client->call(array(
-                                       'method' => 'glpi.listAllMethods'
+                                       'method' => 'glpi.listEntities'
                                    ));
     }
 
@@ -164,7 +180,7 @@ class GLPIWebservice
     public function countEntities()
     {
         $result = $this->client->call(array(
-                                          'method' => 'glpi.listAllMethods',
+                                          'method' => 'glpi.listEntities',
                                           'count'  => TRUE
                                       ));
 
@@ -183,5 +199,121 @@ class GLPIWebservice
     public function getDocument()
     {
         // TODO
+    }
+
+    // Authenticated methods
+
+    /**
+     * Logout current user
+     *
+     * @return mixed
+     */
+    public function logout()
+    {
+        return $this->client->call(array(
+                                       'method' => 'glpi.doLogout',
+                                       'session' => $this->getSessionHash()
+                                   ));
+    }
+
+    /**
+     * Search for values in a dropdown table
+     *
+     * @param $dropdown : name of the dropdown (mandatory). Must a GLPI class name or a Special dropdown name.
+     *
+     * @return array
+     */
+    public function listDropdownValues($dropdown)
+    {
+        return $this->client->call(array(
+                                       'method'   => 'glpi.listDropdownValues',
+                                       'session'  => $this->getSessionHash(),
+                                       'dropdown' => $dropdown
+                                   ));
+    }
+
+    /**
+     * List groups of the current entities
+     *
+     * @return array
+     */
+    public function listGroups()
+    {
+        return $this->client->call(array(
+                                       'method' => 'glpi.listGroups',
+                                       'session' => $this->getSessionHash()
+                                   ));
+    }
+
+    /**
+     * List groups of connected user
+     *
+     * @return array
+     */
+    public function listUserGroups()
+    {
+        return $this->client->call(array(
+                                       'method' => 'glpi.listGroups',
+                                       'session' => $this->getSessionHash(),
+                                       'mine'  => TRUE
+                                   ));
+    }
+
+    /**
+     * Count groups of the current entities
+     *
+     * @return int / null
+     */
+    public function countGroups()
+    {
+        $result = $this->client->call(array(
+                                          'method' => 'glpi.listGroups',
+                                          'session' => $this->getSessionHash(),
+                                          'count'  => TRUE
+                                      ));
+
+        if (isset($result['count'])) {
+            return (int)$result['count'];
+        }
+
+        return NULL;
+    }
+
+    public function createTicket()
+    {
+        // TODO
+    }
+
+    /**
+     * Checks if a session exists
+     *
+     * @param bool $throw_exception
+     * @return bool
+     * @throws NotAuthenticatedException
+     */
+    private function isLogged($throw_exception = FALSE)
+    {
+        if(isset($this->session['session'])) {
+            return TRUE;
+        }
+
+        if($throw_exception) {
+            throw new NotAuthenticatedException;
+        }
+
+        return FALSE;
+    }
+
+    /**
+     * Get current session hash
+     *
+     * @return mixed
+     * @throws NotAuthenticatedException
+     */
+    private function getSessionHash()
+    {
+        $this->isLogged(TRUE);
+
+        return $this->session['session'];
     }
 }
