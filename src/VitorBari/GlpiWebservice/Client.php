@@ -1,6 +1,7 @@
 <?php namespace VitorBari\GLPIWebservice;
 
 use SoapClient;
+use SoapParam;
 
 class Client
 {
@@ -17,6 +18,11 @@ class Client
     {
         $this->soapClient = new SoapClient(null, array('uri'      => $endpoint,
                                                        'location' => $endpoint));
+    }
+
+    public function call($args)
+    {
+        return $this->soapClient->__soapCall('genericExecute', array(new SoapParam($args, 'params')));
     }
 
 }
