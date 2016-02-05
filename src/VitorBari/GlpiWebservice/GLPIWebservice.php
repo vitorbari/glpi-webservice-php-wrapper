@@ -5,6 +5,7 @@ use VitorBari\GLPIWebservice\Exceptions\NotAuthenticatedException;
 
 /**
  * Class GLPIWebservice
+ *
  * @package VitorBari\GLPIWebservice
  */
 class GLPIWebservice
@@ -101,7 +102,9 @@ class GLPIWebservice
             $args['password'] = $ws_pass;
         }
 
-        $this->session = $this->client->call($args);
+        $response = $this->client->call($args);
+
+        $this->session = $response;
 
         return $this;
     }
@@ -279,9 +282,19 @@ class GLPIWebservice
         return NULL;
     }
 
-    public function createTicket()
+    /**
+     * Create a new ticket
+     *
+     * @param array $params
+     * @return mixed
+     */
+    public function createTicket($params = array())
     {
-        // TODO
+        return $this->client->call(array(
+                                       'method' => 'glpi.createTicket',
+                                       'session' => $this->getSessionHash(),
+                                       'mine'  => TRUE
+                                   ) + $params);
     }
 
     /**
