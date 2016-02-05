@@ -1,0 +1,5 @@
+.DS*
+vendor
+composer.lock
+composer.phar
+.idea

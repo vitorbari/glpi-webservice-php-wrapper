@@ -1,0 +1,16 @@
+{
+  "name": "vitorbari/glpi-webservice-php-wrapper",
+  "type": "library",
+  "description": "PHP wrapper class for GLPI Webservice Plugin",
+  "keywords": ["glpi", "webservice"],
+  "license": "Apache",
+  "authors": [
+    {
+      "name": "Vitor Bari Buccianti"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.0",
+    "ext-soap": "*"
+  }
+}
