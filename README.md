@@ -15,3 +15,6 @@ The intention of this class is to allow PHP application developers quick and eas
 * PHP >= 5.3.0
 * PHP Soap Extension
 
+## Versions
+
+It has benn only tested on GLPI v0.85.3 and Webservice Plugin v1.5.0
