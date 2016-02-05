@@ -17,4 +17,4 @@ The intention of this class is to allow PHP application developers quick and eas
 
 ## Versions
 
-It has been only tested on GLPI v0.85.3 and Webservice Plugin v1.5.0.
+It has only been tested on GLPI v0.85.3 and Webservice Plugin v1.5.0.
