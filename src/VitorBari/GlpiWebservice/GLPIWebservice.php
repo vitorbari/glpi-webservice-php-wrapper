@@ -298,6 +298,46 @@ class GLPIWebservice
     }
 
     /**
+     * Retrieve information on a existing ticket if the authenticated user can view it.
+     *
+     * @param $ticket ID of the ticket
+     * @param bool $id2name option to enable id to name translation of dropdown fields
+     * @return mixed
+     */
+    public function getTicket($ticket, $id2name=FALSE)
+    {
+        $args = array(
+            'method' => 'glpi.getTicket',
+            'session' => $this->getSessionHash(),
+            'ticket' => $ticket
+        );
+
+        if (isset($id2name)) {
+            $args['id2name'] = TRUE;
+        }
+
+        return $this->client->call($args);
+    }
+
+    /**
+     * Retrieve information on a existing object if the authenticated user is a super-admin.
+     *
+     * @param $itemtype the object type
+     * @param $id the ID of object
+     * @param array $params (show_label / show_name)
+     * @return mixed
+     */
+    public function getObject($itemtype, $id, $params = array())
+    {
+        return $this->client->call(array(
+                                       'method'   => 'glpi.getObject',
+                                       'session'  => $this->getSessionHash(),
+                                       'itemtype' => $itemtype,
+                                       'id'       => $id
+                                   ) + $params);
+    }
+
+    /**
      * Checks if a session exists
      *
      * @param bool $throw_exception
