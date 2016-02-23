@@ -15,7 +15,7 @@
   },
   "autoload": {
     "psr-4": {
-      "VitorBari\\GLPIWebservice": "src/"
+      "VitorBari\\GLPIWebservice\\": "src/"
     }
   }
 }
