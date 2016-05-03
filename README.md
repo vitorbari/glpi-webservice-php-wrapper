@@ -1,7 +1,5 @@
 # glpi-webservice-php-wrapper
 
-**This is an alpha, experimental package!**
-
 <a name="introduction"></a>
 ## Introduction
 
@@ -38,14 +36,34 @@ $glpi->listUserGroups();
 * `$glpi->getMyInfo($id2name=FALSE)` List the information about the authenticated user
 
 ### Authenticated methods
+
+#### Ticket
+* `$glpi->getTicket($ticket, $id2name=FALSE)` Retrieve information on a existing ticket if the authenticated user can view it
+* `$glpi->createTicket($params = array())` Create a new ticket
+* `$glpi->addTicketDocument()` *Not Implemented*
+* `$glpi->addTicketFollowup()` *Not Implemented*
+* `$glpi->addTicketObserver()` *Not Implemented*
+* `$glpi->setTicketSatisfaction()` *Not Implemented*
+* `$glpi->setTicketValidation()` *Not Implemented*
+* `$glpi->setTicketSolution()` *Not Implemented*
+* `$glpi->setTicketAssign()` *Not Implemented*
+* `$glpi->listTickets()` *Not Implemented*
+
+#### Dropdown
 * `$glpi->listDropdownValues($dropdown)` Search for values in a dropdown table
+
+#### Group
 * `$glpi->listGroups()` List groups of the current entities
 * `$glpi->listUserGroups()` List groups of connected user
 * `$glpi->countGroups()` Count groups of the current entities
-* `$glpi->createTicket($params = array())` Create a new ticket
-* `$glpi->getTicket($ticket, $id2name=FALSE)` Retrieve information on a existing ticket if the authenticated user can view it
-* `$glpi->getObject($itemtype, $id, $params = array())` Retrieve information on a existing object if the authenticated user is a super-admin
 
+#### Object
+* `$glpi->getObject($itemtype, $id, $params = array())` Retrieve information on a existing object if the authenticated user is a super-admin
+* `$glpi->createObjects()` *Not Implemented*
+* `$glpi->deleteObjects()` *Not Implemented*
+* `$glpi->updateObjects()` *Not Implemented*
+* `$glpi->linkObjects()` *Not Implemented*
+* `$glpi->listObjects()` *Not Implemented*
 
 ## Requirements
 
