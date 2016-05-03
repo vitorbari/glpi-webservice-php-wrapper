@@ -35,6 +35,7 @@ $glpi->listUserGroups();
 * `$glpi->auth($glpi_user, $glpi_pass, $ws_user = NULL, $ws_pass = NULL)` Authenticate a user
 * `$glpi->logout()` Logout current user
 * `$glpi->getSession()` Get current session
+* `$glpi->getMyInfo($id2name=FALSE)` List the information about the authenticated user
 
 ### Authenticated methods
 * `$glpi->listDropdownValues($dropdown)` Search for values in a dropdown table

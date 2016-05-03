@@ -57,6 +57,11 @@ class GLPIWebservice
         $this->client = new Client($this->endpoint);
     }
 
+
+    //
+    // Session methods
+    //
+
     /**
      * Get current session
      *
@@ -107,6 +112,39 @@ class GLPIWebservice
         $this->session = $response;
 
         return $this;
+    }
+
+    /**
+     * Logout current user
+     *
+     * @return mixed
+     */
+    public function logout()
+    {
+        return $this->client->call(array(
+                                       'method' => 'glpi.doLogout',
+                                       'session' => $this->getSessionHash()
+                                   ));
+    }
+
+    /**
+     * List the information about the authenticated user
+     *
+     * @param bool $id2name
+     * @return mixed
+     */
+    public function getMyInfo($id2name=FALSE)
+    {
+        $args = array(
+            'method' => 'glpi.getMyInfo',
+            'session' => $this->getSessionHash()
+        );
+
+        if (isset($id2name)) {
+            $args['id2name'] = TRUE;
+        }
+
+        return $this->client->call($args);
     }
 
     //
@@ -204,20 +242,9 @@ class GLPIWebservice
         // TODO
     }
 
+    //
     // Authenticated methods
-
-    /**
-     * Logout current user
-     *
-     * @return mixed
-     */
-    public function logout()
-    {
-        return $this->client->call(array(
-                                       'method' => 'glpi.doLogout',
-                                       'session' => $this->getSessionHash()
-                                   ));
-    }
+    //
 
     /**
      * Search for values in a dropdown table
@@ -336,6 +363,10 @@ class GLPIWebservice
                                        'id'       => $id
                                    ) + $params);
     }
+
+    //
+    // ========================
+    //
 
     /**
      * Checks if a session exists
