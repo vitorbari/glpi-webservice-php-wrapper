@@ -48,6 +48,8 @@ $glpi->listUserGroups();
 #### Ticket
 * `$glpi->getTicket($ticket, $id2name=FALSE)` Retrieve information on a existing ticket if the authenticated user can view it
 * `$glpi->createTicket($params = array())` Create a new ticket
+* `$glpi->listTickets($status=NULL, $id2name=FALSE)` List the Tickets the current authenticated user can view
+* `$glpi->countTickets($status=NULL)` Count the Tickets the current authenticated user can view
 * `$glpi->addTicketDocument()` *Not Implemented*
 * `$glpi->addTicketFollowup()` *Not Implemented*
 * `$glpi->addTicketObserver()` *Not Implemented*
@@ -55,7 +57,6 @@ $glpi->listUserGroups();
 * `$glpi->setTicketValidation()` *Not Implemented*
 * `$glpi->setTicketSolution()` *Not Implemented*
 * `$glpi->setTicketAssign()` *Not Implemented*
-* `$glpi->listTickets()` *Not Implemented*
 
 #### Dropdown
 * `$glpi->listDropdownValues($dropdown)` Search for values in a dropdown table

@@ -75,7 +75,7 @@ class GLPIWebservice
         // Return the session except the hash
         $session = $this->session;
 
-        if(array_key_exists('session', $session)) {
+        if (array_key_exists('session', $session)) {
             unset($session['session']);
         }
 
@@ -122,7 +122,7 @@ class GLPIWebservice
     public function logout()
     {
         return $this->client->call(array(
-                                       'method' => 'glpi.doLogout',
+                                       'method'  => 'glpi.doLogout',
                                        'session' => $this->getSessionHash()
                                    ));
     }
@@ -133,10 +133,10 @@ class GLPIWebservice
      * @param bool $id2name
      * @return mixed
      */
-    public function getMyInfo($id2name=FALSE)
+    public function getMyInfo($id2name = FALSE)
     {
         $args = array(
-            'method' => 'glpi.getMyInfo',
+            'method'  => 'glpi.getMyInfo',
             'session' => $this->getSessionHash()
         );
 
@@ -246,6 +246,102 @@ class GLPIWebservice
     // Authenticated methods
     //
 
+
+    // ========================================
+    // Tickets
+    // ========================================
+
+    /**
+     * Create a new ticket
+     *
+     * @param array $params
+     * @return mixed
+     */
+    public function createTicket($params = array())
+    {
+        return $this->client->call(array(
+                                       'method'  => 'glpi.createTicket',
+                                       'session' => $this->getSessionHash(),
+                                       'mine'    => TRUE
+                                   ) + $params);
+    }
+
+    /**
+     * Retrieve information on a existing ticket if the authenticated user can view it.
+     *
+     * @param $ticket ID of the ticket
+     * @param bool $id2name option to enable id to name translation of dropdown fields
+     * @return mixed
+     */
+    public function getTicket($ticket, $id2name = FALSE)
+    {
+        $args = array(
+            'method'  => 'glpi.getTicket',
+            'session' => $this->getSessionHash(),
+            'ticket'  => $ticket
+        );
+
+        if (isset($id2name)) {
+            $args['id2name'] = TRUE;
+        }
+
+        return $this->client->call($args);
+    }
+
+    /**
+     * List the Tickets the current authenticated user can view.
+     *
+     * @param null $status : 1 (new), 2 (assign), 3 (plan), 4 (waiting), 5 (solved), 'notold','old','process','all', 'notclosed'
+     * @param bool $id2name option to enable id to name translation of dropdown fields
+     * @return mixed
+     */
+    public function listTickets($status = NULL, $id2name = FALSE)
+    {
+        $args = array(
+            'method'  => 'glpi.listTickets',
+            'session' => $this->getSessionHash()
+        );
+
+        if (isset($status)) {
+            $args['status'] = $status;
+        }
+
+        if (isset($id2name)) {
+            $args['id2name'] = TRUE;
+        }
+
+        return $this->client->call($args);
+    }
+
+    /**
+     * Count the Tickets the current authenticated user can view.
+     *
+     * @param null $status : 1 (new), 2 (assign), 3 (plan), 4 (waiting), 5 (solved), 'notold','old','process','all', 'notclosed'
+     * @return int|null
+     */
+    public function countTickets($status = NULL)
+    {
+        $args = array(
+            'method'  => 'glpi.listTickets',
+            'session' => $this->getSessionHash(),
+            'count'   => TRUE
+        );
+
+        if (isset($status)) {
+            $args['status'] = $status;
+        }
+
+        if (isset($result['count'])) {
+            return (int)$result['count'];
+        }
+
+        return NULL;
+    }
+
+    // ========================================
+    // Dropdown
+    // ========================================
+
     /**
      * Search for values in a dropdown table
      *
@@ -262,6 +358,10 @@ class GLPIWebservice
                                    ));
     }
 
+    // ========================================
+    // Group
+    // ========================================
+
     /**
      * List groups of the current entities
      *
@@ -270,7 +370,7 @@ class GLPIWebservice
     public function listGroups()
     {
         return $this->client->call(array(
-                                       'method' => 'glpi.listGroups',
+                                       'method'  => 'glpi.listGroups',
                                        'session' => $this->getSessionHash()
                                    ));
     }
@@ -283,9 +383,9 @@ class GLPIWebservice
     public function listUserGroups()
     {
         return $this->client->call(array(
-                                       'method' => 'glpi.listGroups',
+                                       'method'  => 'glpi.listGroups',
                                        'session' => $this->getSessionHash(),
-                                       'mine'  => TRUE
+                                       'mine'    => TRUE
                                    ));
     }
 
@@ -297,9 +397,9 @@ class GLPIWebservice
     public function countGroups()
     {
         $result = $this->client->call(array(
-                                          'method' => 'glpi.listGroups',
+                                          'method'  => 'glpi.listGroups',
                                           'session' => $this->getSessionHash(),
-                                          'count'  => TRUE
+                                          'count'   => TRUE
                                       ));
 
         if (isset($result['count'])) {
@@ -309,42 +409,9 @@ class GLPIWebservice
         return NULL;
     }
 
-    /**
-     * Create a new ticket
-     *
-     * @param array $params
-     * @return mixed
-     */
-    public function createTicket($params = array())
-    {
-        return $this->client->call(array(
-                                       'method' => 'glpi.createTicket',
-                                       'session' => $this->getSessionHash(),
-                                       'mine'  => TRUE
-                                   ) + $params);
-    }
-
-    /**
-     * Retrieve information on a existing ticket if the authenticated user can view it.
-     *
-     * @param $ticket ID of the ticket
-     * @param bool $id2name option to enable id to name translation of dropdown fields
-     * @return mixed
-     */
-    public function getTicket($ticket, $id2name=FALSE)
-    {
-        $args = array(
-            'method' => 'glpi.getTicket',
-            'session' => $this->getSessionHash(),
-            'ticket' => $ticket
-        );
-
-        if (isset($id2name)) {
-            $args['id2name'] = TRUE;
-        }
-
-        return $this->client->call($args);
-    }
+    // ========================================
+    // Object
+    // ========================================
 
     /**
      * Retrieve information on a existing object if the authenticated user is a super-admin.
@@ -377,11 +444,11 @@ class GLPIWebservice
      */
     private function isLogged($throw_exception = FALSE)
     {
-        if(isset($this->session['session'])) {
+        if (isset($this->session['session'])) {
             return TRUE;
         }
 
-        if($throw_exception) {
+        if ($throw_exception) {
             throw new NotAuthenticatedException;
         }
 
