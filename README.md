@@ -7,6 +7,14 @@ A simple object orientated wrapper for the [GLPI Webservice Plugin](https://forg
 
 The intention of this class is to allow PHP application developers quick and easy interaction with the GLPI Webservice Plugin, without having to worry about the finer details of the Webservice.
 
+## Installation
+
+Via Composer.
+
+```
+composer require vitorbari/glpi-webservice-php-wrapper
+```
+
 ## Usage Example
 
 ```php
