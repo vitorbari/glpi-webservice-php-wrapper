@@ -293,9 +293,10 @@ class GLPIWebservice
      *
      * @param null $status : 1 (new), 2 (assign), 3 (plan), 4 (waiting), 5 (solved), 'notold','old','process','all', 'notclosed'
      * @param bool $id2name option to enable id to name translation of dropdown fields
+     * @param null $limit result will not contains more than # item. By default, limit is the GLPI configured value (list_limit_max)
      * @return mixed
      */
-    public function listTickets($status = NULL, $id2name = FALSE)
+    public function listTickets($status = NULL, $id2name = FALSE, $limit = NULL)
     {
         $args = array(
             'method'  => 'glpi.listTickets',
@@ -308,6 +309,10 @@ class GLPIWebservice
 
         if (isset($id2name)) {
             $args['id2name'] = TRUE;
+        }
+
+        if (isset($limit)) {
+            $args['limit'] = (int) $limit;
         }
 
         return $this->client->call($args);
