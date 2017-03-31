@@ -1,5 +1,7 @@
 # glpi-webservice-php-wrapper
 
+[![StyleCI](https://styleci.io/repos/51149054/shield)](https://styleci.io/repos/51149054)
+
 <a name="introduction"></a>
 ## Introduction
 
