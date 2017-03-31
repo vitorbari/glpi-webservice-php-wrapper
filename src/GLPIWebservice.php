@@ -236,9 +236,28 @@ class GLPIWebservice
         // TODO
     }
 
-    public function getDocument()
+    /**
+     * Retrieve a document if the authenticated user can view it.
+     *
+     * @param $document int of the document
+     * @param null $ticket ID of the ticket (if document is attached to a ticket)
+     * @param bool $id2name option to enable id to name translation of dropdown fields
+     * @return mixed
+     */
+    public function getDocument($document, $ticket = null, $id2name = false)
     {
-        // TODO
+        $args = array(
+            'method'   => 'glpi.getDocument',
+            'session'  => $this->getOptionalSessionHash(),
+            'document' => $document,
+            'ticket'   => $ticket
+        );
+
+        if (isset($id2name)) {
+            $args['id2name'] = true;
+        }
+
+        return $this->client->call($args);
     }
 
     //
@@ -470,5 +489,19 @@ class GLPIWebservice
         $this->isLogged(true);
 
         return $this->session['session'];
+    }
+
+    /**
+     * Get current session hash if it exists
+     *
+     * @return mixed
+     */
+    private function getOptionalSessionHash()
+    {
+        if ($this->isLogged(false)) {
+            return $this->session['session'];
+        }
+
+        return null;
     }
 }
