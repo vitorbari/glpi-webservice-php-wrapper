@@ -1,3 +1,5 @@
 <?php namespace VitorBari\GLPIWebservice\Exceptions;
 
-class NotAuthenticatedException extends \Exception { }
+class NotAuthenticatedException extends \Exception
+{
+}

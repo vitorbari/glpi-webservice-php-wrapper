@@ -2,7 +2,6 @@
 
 use VitorBari\GLPIWebservice\Exceptions\NotAuthenticatedException;
 
-
 /**
  * Class GLPIWebservice
  *
@@ -48,7 +47,7 @@ class GLPIWebservice
      *
      * @param null $endpoint
      */
-    public function __construct($endpoint = NULL)
+    public function __construct($endpoint = null)
     {
         if (!empty($endpoint)) {
             $this->endpoint = $endpoint;
@@ -70,7 +69,7 @@ class GLPIWebservice
      */
     public function getSession()
     {
-        $this->isLogged(TRUE);
+        $this->isLogged(true);
 
         // Return the session except the hash
         $session = $this->session;
@@ -91,7 +90,7 @@ class GLPIWebservice
      * @param null $ws_pass
      * @return $this
      */
-    public function auth($glpi_user, $glpi_pass, $ws_user = NULL, $ws_pass = NULL)
+    public function auth($glpi_user, $glpi_pass, $ws_user = null, $ws_pass = null)
     {
         $args = array(
             'method'         => 'glpi.doLogin',
@@ -133,7 +132,7 @@ class GLPIWebservice
      * @param bool $id2name
      * @return mixed
      */
-    public function getMyInfo($id2name = FALSE)
+    public function getMyInfo($id2name = false)
     {
         $args = array(
             'method'  => 'glpi.getMyInfo',
@@ -141,7 +140,7 @@ class GLPIWebservice
         );
 
         if (isset($id2name)) {
-            $args['id2name'] = TRUE;
+            $args['id2name'] = true;
         }
 
         return $this->client->call($args);
@@ -222,14 +221,14 @@ class GLPIWebservice
     {
         $result = $this->client->call(array(
                                           'method' => 'glpi.listEntities',
-                                          'count'  => TRUE
+                                          'count'  => true
                                       ));
 
         if (isset($result['count'])) {
             return (int)$result['count'];
         }
 
-        return NULL;
+        return null;
     }
 
     public function listKnowBaseItems()
@@ -262,7 +261,7 @@ class GLPIWebservice
         return $this->client->call(array(
                                        'method'  => 'glpi.createTicket',
                                        'session' => $this->getSessionHash(),
-                                       'mine'    => TRUE
+                                       'mine'    => true
                                    ) + $params);
     }
 
@@ -273,7 +272,7 @@ class GLPIWebservice
      * @param bool $id2name option to enable id to name translation of dropdown fields
      * @return mixed
      */
-    public function getTicket($ticket, $id2name = FALSE)
+    public function getTicket($ticket, $id2name = false)
     {
         $args = array(
             'method'  => 'glpi.getTicket',
@@ -282,7 +281,7 @@ class GLPIWebservice
         );
 
         if (isset($id2name)) {
-            $args['id2name'] = TRUE;
+            $args['id2name'] = true;
         }
 
         return $this->client->call($args);
@@ -296,7 +295,7 @@ class GLPIWebservice
      * @param null $limit result will not contains more than # item. By default, limit is the GLPI configured value (list_limit_max)
      * @return mixed
      */
-    public function listTickets($status = NULL, $id2name = FALSE, $limit = NULL)
+    public function listTickets($status = null, $id2name = false, $limit = null)
     {
         $args = array(
             'method'  => 'glpi.listTickets',
@@ -308,7 +307,7 @@ class GLPIWebservice
         }
 
         if (isset($id2name)) {
-            $args['id2name'] = TRUE;
+            $args['id2name'] = true;
         }
 
         if (isset($limit)) {
@@ -324,12 +323,12 @@ class GLPIWebservice
      * @param null $status : 1 (new), 2 (assign), 3 (plan), 4 (waiting), 5 (solved), 'notold','old','process','all', 'notclosed'
      * @return int|null
      */
-    public function countTickets($status = NULL)
+    public function countTickets($status = null)
     {
         $args = array(
             'method'  => 'glpi.listTickets',
             'session' => $this->getSessionHash(),
-            'count'   => TRUE
+            'count'   => true
         );
 
         if (isset($status)) {
@@ -340,7 +339,7 @@ class GLPIWebservice
             return (int)$result['count'];
         }
 
-        return NULL;
+        return null;
     }
 
     // ========================================
@@ -390,7 +389,7 @@ class GLPIWebservice
         return $this->client->call(array(
                                        'method'  => 'glpi.listGroups',
                                        'session' => $this->getSessionHash(),
-                                       'mine'    => TRUE
+                                       'mine'    => true
                                    ));
     }
 
@@ -404,14 +403,14 @@ class GLPIWebservice
         $result = $this->client->call(array(
                                           'method'  => 'glpi.listGroups',
                                           'session' => $this->getSessionHash(),
-                                          'count'   => TRUE
+                                          'count'   => true
                                       ));
 
         if (isset($result['count'])) {
             return (int)$result['count'];
         }
 
-        return NULL;
+        return null;
     }
 
     // ========================================
@@ -447,17 +446,17 @@ class GLPIWebservice
      * @return bool
      * @throws NotAuthenticatedException
      */
-    private function isLogged($throw_exception = FALSE)
+    private function isLogged($throw_exception = false)
     {
         if (isset($this->session['session'])) {
-            return TRUE;
+            return true;
         }
 
         if ($throw_exception) {
             throw new NotAuthenticatedException;
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -468,7 +467,7 @@ class GLPIWebservice
      */
     private function getSessionHash()
     {
-        $this->isLogged(TRUE);
+        $this->isLogged(true);
 
         return $this->session['session'];
     }

@@ -24,5 +24,4 @@ class Client
     {
         return $this->soapClient->__soapCall('genericExecute', array(new SoapParam($args, 'params')));
     }
-
 }
