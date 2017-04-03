@@ -121,9 +121,9 @@ class GLPIWebservice
     public function logout()
     {
         return $this->client->call(array(
-                                       'method'  => 'glpi.doLogout',
-                                       'session' => $this->getSessionHash()
-                                   ));
+            'method'  => 'glpi.doLogout',
+            'session' => $this->getSessionHash()
+        ));
     }
 
     /**
@@ -161,8 +161,8 @@ class GLPIWebservice
     public function test()
     {
         return $this->client->call(array(
-                                       'method' => 'glpi.test'
-                                   ));
+            'method' => 'glpi.test'
+        ));
     }
 
     /**
@@ -179,8 +179,8 @@ class GLPIWebservice
     public function status()
     {
         return $this->client->call(array(
-                                       'method' => 'glpi.status'
-                                   ));
+            'method' => 'glpi.status'
+        ));
     }
 
     /**
@@ -193,8 +193,8 @@ class GLPIWebservice
     public function listAllMethods()
     {
         return $this->client->call(array(
-                                       'method' => 'glpi.listAllMethods'
-                                   ));
+            'method' => 'glpi.listAllMethods'
+        ));
     }
 
     /**
@@ -206,8 +206,8 @@ class GLPIWebservice
     public function listEntities()
     {
         return $this->client->call(array(
-                                       'method' => 'glpi.listEntities'
-                                   ));
+            'method' => 'glpi.listEntities'
+        ));
     }
 
 
@@ -220,9 +220,9 @@ class GLPIWebservice
     public function countEntities()
     {
         $result = $this->client->call(array(
-                                          'method' => 'glpi.listEntities',
-                                          'count'  => true
-                                      ));
+            'method' => 'glpi.listEntities',
+            'count'  => true
+        ));
 
         if (isset($result['count'])) {
             return (int)$result['count'];
@@ -278,10 +278,10 @@ class GLPIWebservice
     public function createTicket($params = array())
     {
         return $this->client->call(array(
-                                       'method'  => 'glpi.createTicket',
-                                       'session' => $this->getSessionHash(),
-                                       'mine'    => true
-                                   ) + $params);
+                'method'  => 'glpi.createTicket',
+                'session' => $this->getSessionHash(),
+                'mine'    => true
+            ) + $params);
     }
 
     /**
@@ -330,7 +330,7 @@ class GLPIWebservice
         }
 
         if (isset($limit)) {
-            $args['limit'] = (int) $limit;
+            $args['limit'] = (int)$limit;
         }
 
         return $this->client->call($args);
@@ -361,6 +361,45 @@ class GLPIWebservice
         return null;
     }
 
+    /**
+     * Add a document to a existing ticket if the authenticated user can edit it.
+     * Base64 and uri cannot be set together
+     *
+     * @param $ticket : ID of the ticket
+     * @param $name : name of the document to be updoaded
+     * @param $uri : uri of the document to be uploaded
+     * @param $base64 : content of the document base64 encoded string
+     * @param null $content : if present, also add a followup (if doc add succeed)
+     * @return int|null
+     */
+    public function addTicketDocument($ticket, $name, $uri = null, $base64 = null, $content = null)
+    {
+        if (($base64 && $uri) || (empty($base64) && empty($uri))) {
+            throw new \InvalidArgumentException('You must pass base64 or uri.');
+        }
+
+        $args = array(
+            'method'  => 'glpi.addTicketDocument',
+            'session' => $this->getSessionHash(),
+            'ticket'  => $ticket,
+            'name'    => $name,
+        );
+
+        if (isset($uri)) {
+            $args['uri'] = $uri;
+        }
+
+        if (isset($base64)) {
+            $args['base64'] = $base64;
+        }
+
+        if (isset($content)) {
+            $args['content'] = $content;
+        }
+
+        return $this->client->call($args);
+    }
+
     // ========================================
     // Dropdown
     // ========================================
@@ -375,10 +414,10 @@ class GLPIWebservice
     public function listDropdownValues($dropdown)
     {
         return $this->client->call(array(
-                                       'method'   => 'glpi.listDropdownValues',
-                                       'session'  => $this->getSessionHash(),
-                                       'dropdown' => $dropdown
-                                   ));
+            'method'   => 'glpi.listDropdownValues',
+            'session'  => $this->getSessionHash(),
+            'dropdown' => $dropdown
+        ));
     }
 
     // ========================================
@@ -393,9 +432,9 @@ class GLPIWebservice
     public function listGroups()
     {
         return $this->client->call(array(
-                                       'method'  => 'glpi.listGroups',
-                                       'session' => $this->getSessionHash()
-                                   ));
+            'method'  => 'glpi.listGroups',
+            'session' => $this->getSessionHash()
+        ));
     }
 
     /**
@@ -406,10 +445,10 @@ class GLPIWebservice
     public function listUserGroups()
     {
         return $this->client->call(array(
-                                       'method'  => 'glpi.listGroups',
-                                       'session' => $this->getSessionHash(),
-                                       'mine'    => true
-                                   ));
+            'method'  => 'glpi.listGroups',
+            'session' => $this->getSessionHash(),
+            'mine'    => true
+        ));
     }
 
     /**
@@ -420,10 +459,10 @@ class GLPIWebservice
     public function countGroups()
     {
         $result = $this->client->call(array(
-                                          'method'  => 'glpi.listGroups',
-                                          'session' => $this->getSessionHash(),
-                                          'count'   => true
-                                      ));
+            'method'  => 'glpi.listGroups',
+            'session' => $this->getSessionHash(),
+            'count'   => true
+        ));
 
         if (isset($result['count'])) {
             return (int)$result['count'];
@@ -447,11 +486,11 @@ class GLPIWebservice
     public function getObject($itemtype, $id, $params = array())
     {
         return $this->client->call(array(
-                                       'method'   => 'glpi.getObject',
-                                       'session'  => $this->getSessionHash(),
-                                       'itemtype' => $itemtype,
-                                       'id'       => $id
-                                   ) + $params);
+                'method'   => 'glpi.getObject',
+                'session'  => $this->getSessionHash(),
+                'itemtype' => $itemtype,
+                'id'       => $id
+            ) + $params);
     }
 
     //
