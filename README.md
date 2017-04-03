@@ -37,7 +37,7 @@ $glpi->listUserGroups();
 * `$glpi->listEntities()` Return list of current entities defined by server configuration for the client
 * `$glpi->countEntities()` Return number of current entities defined by server configuration for the client
 * `$glpi->listKnowBaseItems()` *Not Implemented*
-* `$glpi->getDocument()` *Not Implemented*
+* `$glpi->getDocument()` Retrieve a document if the authenticated user can view it
 
 ### Session
 * `$glpi->auth($glpi_user, $glpi_pass, $ws_user = NULL, $ws_pass = NULL)` Authenticate a user
