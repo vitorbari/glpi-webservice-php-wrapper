@@ -53,7 +53,7 @@ $glpi->listUserGroups();
 * `$glpi->listTickets($status=NULL, $id2name=FALSE)` List the Tickets the current authenticated user can view
 * `$glpi->countTickets($status=NULL)` Count the Tickets the current authenticated user can view
 * `$glpi->addTicketDocument()` Add a document to a existing ticket if the authenticated user can edit it
-* `$glpi->addTicketFollowup()` *Not Implemented*
+* `$glpi->addTicketFollowup()` Add a followup to a existing ticket if the authenticated user can edit it
 * `$glpi->addTicketObserver()` *Not Implemented*
 * `$glpi->setTicketSatisfaction()` *Not Implemented*
 * `$glpi->setTicketValidation()` *Not Implemented*

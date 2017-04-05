@@ -400,6 +400,45 @@ class GLPIWebservice
         return $this->client->call($args);
     }
 
+    /**
+     * Add a followup to a existing ticket if the authenticated user can edit it.
+     * For solved ticket, reopen or close option is mandatory
+     * For closed ticket, adding a new followup is refused
+     *
+     * @param $ticket : ID of the ticket, mandatory
+     * @param $content : of the new followup, mandatory
+     * @param $users_login : users login - if you want to check rights of user with checkApprobationSolution function for logged user not allowed, optional
+     * @param $source : name of the 'RequestType' (created if needed), optional, default WebServices
+     * @param $private : optional boolean, default 0
+     * @param $reopen : set ticket to working state (deny solution for "solved" ticket or answer for "waiting" ticket)
+     * @param $close : close a "solved" ticket (approve the solution)
+     * @return mixed
+     */
+    public function addTicketFollowup(
+        $ticket,
+        $content,
+        $users_login = false,
+        $source = null,
+        $private = null,
+        $reopen = null,
+        $close = null
+    ) {
+        $args = array(
+            'method'  => 'glpi.addTicketFollowup',
+            'session' => $this->getSessionHash(),
+            'ticket'  => $ticket,
+            'content' => $content,
+        );
+
+        foreach (compact('users_login', 'source', 'private', 'reopen', 'close') as $key => $value) {
+            if (isset($value)) {
+                $args[$key] = $value;
+            }
+        }
+
+        return $this->client->call($args);
+    }
+
     // ========================================
     // Dropdown
     // ========================================
