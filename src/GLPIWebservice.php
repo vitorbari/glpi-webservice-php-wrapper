@@ -439,6 +439,30 @@ class GLPIWebservice
         return $this->client->call($args);
     }
 
+    /**
+     * Add a new observer to a existing ticket.
+     * Current user can add himself to a ticket he can view.
+     * Others users can be added if allowed to update the ticket.
+     *
+     * @param $ticket : ID of the ticket, mandatory
+     * @param $user : ID of the user to add, optional, default to connected user
+     * @return mixed
+     */
+    public function addTicketObserver($ticket, $user = null)
+    {
+        $args = array(
+            'method'  => 'glpi.addTicketObserver',
+            'session' => $this->getSessionHash(),
+            'ticket'  => $ticket
+        );
+
+        if (isset($user)) {
+            $args['user'] = $user;
+        }
+
+        return $this->client->call($args);
+    }
+
     // ========================================
     // Dropdown
     // ========================================
