@@ -40,22 +40,22 @@ $glpi->listUserGroups();
 * `$glpi->getDocument()` Retrieve a document if the authenticated user can view it
 
 ### Session
-* `$glpi->auth($glpi_user, $glpi_pass, $ws_user = NULL, $ws_pass = NULL)` Authenticate a user
+* `$glpi->auth($glpi_user, $glpi_pass, $ws_user = null, $ws_pass = null)` Authenticate a user
 * `$glpi->logout()` Logout current user
 * `$glpi->getSession()` Get current session
-* `$glpi->getMyInfo($id2name=FALSE)` List the information about the authenticated user
+* `$glpi->getMyInfo($id2name=false)` List the information about the authenticated user
 
 ### Authenticated methods
 
 #### Ticket
-* `$glpi->getTicket($ticket, $id2name=FALSE)` Retrieve information on a existing ticket if the authenticated user can view it
+* `$glpi->getTicket($ticket, $id2name=false)` Retrieve information on a existing ticket if the authenticated user can view it
 * `$glpi->createTicket($params = array())` Create a new ticket
-* `$glpi->listTickets($status=NULL, $id2name=FALSE)` List the Tickets the current authenticated user can view
-* `$glpi->countTickets($status=NULL)` Count the Tickets the current authenticated user can view
-* `$glpi->addTicketDocument()` Add a document to an existing ticket if the authenticated user can edit it
-* `$glpi->addTicketFollowup()` Add a followup to an existing ticket if the authenticated user can edit it
-* `$glpi->addTicketObserver()` Add a new observer to an existing ticket
-* `$glpi->setTicketSatisfaction()` Answer to the ticket satisfaction survey
+* `$glpi->listTickets($status=null, $id2name=false)` List the Tickets the current authenticated user can view
+* `$glpi->countTickets($status=null)` Count the Tickets the current authenticated user can view
+* `$glpi->addTicketDocument($ticket, $name, $uri = null, $base64 = null, $content = null)` Add a document to an existing ticket if the authenticated user can edit it
+* `$glpi->addTicketFollowup($ticket, $content, $users_login = false, $source = null, $private = null, $reopen = null, $close = null)` Add a followup to an existing ticket if the authenticated user can edit it
+* `$glpi->addTicketObserver($ticket, $user = null)` Add a new observer to an existing ticket
+* `$glpi->setTicketSatisfaction($ticket, $satisfaction, $comment = null)` Answer to the ticket satisfaction survey
 * `$glpi->setTicketValidation()` *Not Implemented*
 * `$glpi->setTicketSolution()` *Not Implemented*
 * `$glpi->setTicketAssign()` *Not Implemented*
