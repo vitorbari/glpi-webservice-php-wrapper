@@ -1,5 +1,6 @@
 <?php namespace VitorBari\GLPIWebservice;
 
+use InvalidArgumentException;
 use VitorBari\GLPIWebservice\Exceptions\NotAuthenticatedException;
 
 /**
@@ -375,7 +376,7 @@ class GLPIWebservice
     public function addTicketDocument($ticket, $name, $uri = null, $base64 = null, $content = null)
     {
         if (($base64 && $uri) || (empty($base64) && empty($uri))) {
-            throw new \InvalidArgumentException('You must pass base64 or uri.');
+            throw new InvalidArgumentException('You must pass base64 or uri.');
         }
 
         $args = array(
@@ -458,6 +459,34 @@ class GLPIWebservice
 
         if (isset($user)) {
             $args['user'] = $user;
+        }
+
+        return $this->client->call($args);
+    }
+
+    /**
+     * Answer to the ticket satisfaction survey
+     *
+     * @param $ticket : ID of the ticket, mandatory
+     * @param int $satisfaction : integer from 0 to 5, mandatory
+     * @param null $comment : text, optional
+     * @return mixed
+     */
+    public function setTicketSatisfaction($ticket, $satisfaction, $comment = null)
+    {
+        if (!is_numeric($satisfaction) || ($satisfaction < 0 || $satisfaction > 5)) {
+            throw new InvalidArgumentException('Satisfaction must be an integer from 0 to 5.');
+        }
+
+        $args = array(
+            'method'       => 'glpi.setTicketSatisfaction',
+            'session'      => $this->getSessionHash(),
+            'ticket'       => $ticket,
+            'satisfaction' => $satisfaction,
+        );
+
+        if (isset($comment)) {
+            $args['comment'] = $comment;
         }
 
         return $this->client->call($args);
