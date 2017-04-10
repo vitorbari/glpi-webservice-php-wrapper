@@ -2,6 +2,7 @@
 
 use InvalidArgumentException;
 use VitorBari\GLPIWebservice\Exceptions\NotAuthenticatedException;
+use VitorBari\GLPIWebservice\Services\ServiceInterface;
 
 /**
  * Class GLPIWebservice
@@ -12,16 +13,9 @@ class GLPIWebservice
 {
 
     /**
-     * GLPI Webservice SOAP endpoint
-     *
-     * @var string
+     * @var ServiceInterface $service
      */
-    protected $endpoint = 'http://localhost/plugins/webservices/soap.php';
-
-    /**
-     * @var Client
-     */
-    private $client;
+    protected $service;
 
     /**
      * GLPI Session
@@ -44,17 +38,15 @@ class GLPIWebservice
     private $session;
 
     /**
-     * GLPIWebservice constructor.
+     * Initiate this class with a subclass of ServiceInterface. There are two
+     * service subclasses available:
+     * - Service\Soap: Service which makes calls to the GLPI Webservice
+     * - Service\Stub: Service stub for test purposes (unit tests)
      *
-     * @param null $endpoint
+     * @param ServiceInterface $service
      */
-    public function __construct($endpoint = null)
-    {
-        if (!empty($endpoint)) {
-            $this->endpoint = $endpoint;
-        }
-
-        $this->client = new Client($this->endpoint);
+    public function __construct(ServiceInterface $service) {
+        $this->service = $service;
     }
 
 
@@ -107,7 +99,7 @@ class GLPIWebservice
             $args['password'] = $ws_pass;
         }
 
-        $response = $this->client->call($args);
+        $response = $this->service->call($args);
 
         $this->session = $response;
 
@@ -121,7 +113,7 @@ class GLPIWebservice
      */
     public function logout()
     {
-        return $this->client->call(array(
+        return $this->service->call(array(
             'method'  => 'glpi.doLogout',
             'session' => $this->getSessionHash()
         ));
@@ -144,7 +136,7 @@ class GLPIWebservice
             $args['id2name'] = true;
         }
 
-        return $this->client->call($args);
+        return $this->service->call($args);
     }
 
     //
@@ -161,7 +153,7 @@ class GLPIWebservice
      */
     public function test()
     {
-        return $this->client->call(array(
+        return $this->service->call(array(
             'method' => 'glpi.test'
         ));
     }
@@ -179,7 +171,7 @@ class GLPIWebservice
      */
     public function status()
     {
-        return $this->client->call(array(
+        return $this->service->call(array(
             'method' => 'glpi.status'
         ));
     }
@@ -193,7 +185,7 @@ class GLPIWebservice
      */
     public function listAllMethods()
     {
-        return $this->client->call(array(
+        return $this->service->call(array(
             'method' => 'glpi.listAllMethods'
         ));
     }
@@ -206,7 +198,7 @@ class GLPIWebservice
      */
     public function listEntities()
     {
-        return $this->client->call(array(
+        return $this->service->call(array(
             'method' => 'glpi.listEntities'
         ));
     }
@@ -220,7 +212,7 @@ class GLPIWebservice
      */
     public function countEntities()
     {
-        $result = $this->client->call(array(
+        $result = $this->service->call(array(
             'method' => 'glpi.listEntities',
             'count'  => true
         ));
@@ -258,7 +250,7 @@ class GLPIWebservice
             $args['id2name'] = true;
         }
 
-        return $this->client->call($args);
+        return $this->service->call($args);
     }
 
     //
@@ -278,7 +270,7 @@ class GLPIWebservice
      */
     public function createTicket($params = array())
     {
-        return $this->client->call(array(
+        return $this->service->call(array(
                 'method'  => 'glpi.createTicket',
                 'session' => $this->getSessionHash(),
                 'mine'    => true
@@ -304,7 +296,7 @@ class GLPIWebservice
             $args['id2name'] = true;
         }
 
-        return $this->client->call($args);
+        return $this->service->call($args);
     }
 
     /**
@@ -334,7 +326,7 @@ class GLPIWebservice
             $args['limit'] = (int)$limit;
         }
 
-        return $this->client->call($args);
+        return $this->service->call($args);
     }
 
     /**
@@ -398,7 +390,7 @@ class GLPIWebservice
             $args['content'] = $content;
         }
 
-        return $this->client->call($args);
+        return $this->service->call($args);
     }
 
     /**
@@ -437,7 +429,7 @@ class GLPIWebservice
             }
         }
 
-        return $this->client->call($args);
+        return $this->service->call($args);
     }
 
     /**
@@ -461,7 +453,7 @@ class GLPIWebservice
             $args['user'] = $user;
         }
 
-        return $this->client->call($args);
+        return $this->service->call($args);
     }
 
     /**
@@ -489,7 +481,7 @@ class GLPIWebservice
             $args['comment'] = $comment;
         }
 
-        return $this->client->call($args);
+        return $this->service->call($args);
     }
 
     /**
@@ -521,7 +513,7 @@ class GLPIWebservice
             $args['comment'] = $comment;
         }
 
-        return $this->client->call($args);
+        return $this->service->call($args);
     }
 
     // ========================================
@@ -537,7 +529,7 @@ class GLPIWebservice
      */
     public function listDropdownValues($dropdown)
     {
-        return $this->client->call(array(
+        return $this->service->call(array(
             'method'   => 'glpi.listDropdownValues',
             'session'  => $this->getSessionHash(),
             'dropdown' => $dropdown
@@ -555,7 +547,7 @@ class GLPIWebservice
      */
     public function listGroups()
     {
-        return $this->client->call(array(
+        return $this->service->call(array(
             'method'  => 'glpi.listGroups',
             'session' => $this->getSessionHash()
         ));
@@ -568,7 +560,7 @@ class GLPIWebservice
      */
     public function listUserGroups()
     {
-        return $this->client->call(array(
+        return $this->service->call(array(
             'method'  => 'glpi.listGroups',
             'session' => $this->getSessionHash(),
             'mine'    => true
@@ -582,7 +574,7 @@ class GLPIWebservice
      */
     public function countGroups()
     {
-        $result = $this->client->call(array(
+        $result = $this->service->call(array(
             'method'  => 'glpi.listGroups',
             'session' => $this->getSessionHash(),
             'count'   => true
@@ -609,7 +601,7 @@ class GLPIWebservice
      */
     public function getObject($itemtype, $id, $params = array())
     {
-        return $this->client->call(array(
+        return $this->service->call(array(
                 'method'   => 'glpi.getObject',
                 'session'  => $this->getSessionHash(),
                 'itemtype' => $itemtype,

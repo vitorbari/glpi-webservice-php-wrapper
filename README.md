@@ -20,12 +20,22 @@ composer require vitorbari/glpi-webservice-php-wrapper
 ## Usage Example
 
 ```php
+use VitorBari\GLPIWebservice\Services\Soap;
 use VitorBari\GLPIWebservice\GLPIWebservice;
 
-$glpi = new GLPIWebservice('http://[glpi-url]/plugins/webservices/soap.php');
+// Create soap adapter
+// Currently, only soap is implemented, but the plugin also supports XMLRPC and REST
+$endpoint = 'http://[glpi-url]/plugins/webservices/soap.php';
+$soapClient = new SoapClient(null, array('uri' => $endpoint, 'location' => $endpoint))
+$service = new Soap($soapClient);
 
-$glpi->auth('vitor.bari', '1234')->listGroups();
+$glpi = new GLPIWebservice($service);
+
+$glpi->auth('vitor.bari', '1234');
 $glpi->listUserGroups();
+
+// You can use method chaining
+$glpi->auth('vitor.bari', '1234')->listUserGroups();
 ```
 
 ## Methods
