@@ -1,6 +1,5 @@
 <?php namespace VitorBari\GLPIWebservice\Services;
 
-
 interface ServiceInterface
 {
     /**

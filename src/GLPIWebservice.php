@@ -45,7 +45,8 @@ class GLPIWebservice
      *
      * @param ServiceInterface $service
      */
-    public function __construct(ServiceInterface $service) {
+    public function __construct(ServiceInterface $service)
+    {
         $this->service = $service;
     }
 
