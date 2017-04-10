@@ -56,7 +56,7 @@ $glpi->listUserGroups();
 * `$glpi->addTicketFollowup($ticket, $content, $users_login = false, $source = null, $private = null, $reopen = null, $close = null)` Add a followup to an existing ticket if the authenticated user can edit it
 * `$glpi->addTicketObserver($ticket, $user = null)` Add a new observer to an existing ticket
 * `$glpi->setTicketSatisfaction($ticket, $satisfaction, $comment = null)` Answer to the ticket satisfaction survey
-* `$glpi->setTicketValidation()` *Not Implemented*
+* `$glpi->setTicketValidation($approval, $status, $comment = null)` Answer to a ticket approval request
 * `$glpi->setTicketSolution()` *Not Implemented*
 * `$glpi->setTicketAssign()` *Not Implemented*
 

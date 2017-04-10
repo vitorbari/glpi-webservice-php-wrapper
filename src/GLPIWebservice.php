@@ -492,6 +492,38 @@ class GLPIWebservice
         return $this->client->call($args);
     }
 
+    /**
+     * Answer to a ticket approval request
+     *
+     * @param $approval : ID of the request, mandatory
+     * @param int $status : integer, mandatory - must be from : 1 (none), 2 (waiting), 3 (accepted), 4 (refused)
+     * @param null $comment : text, optional (mandatory if status=4)
+     * @return mixed
+     */
+    public function setTicketValidation($approval, $status, $comment = null)
+    {
+        if (!is_numeric($status) || ($status < 1 || $status > 4)) {
+            throw new InvalidArgumentException('Status must be an integer from 1 to 4.');
+        }
+
+        if ($status == 4 && empty($comment)) {
+            throw new InvalidArgumentException('Please specify the comment.');
+        }
+
+        $args = array(
+            'method'   => 'glpi.setTicketValidation',
+            'session'  => $this->getSessionHash(),
+            'approval' => $approval,
+            'status'   => $status,
+        );
+
+        if (isset($comment)) {
+            $args['comment'] = $comment;
+        }
+
+        return $this->client->call($args);
+    }
+
     // ========================================
     // Dropdown
     // ========================================
