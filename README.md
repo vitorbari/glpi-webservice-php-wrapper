@@ -47,7 +47,7 @@ $glpi->auth('vitor.bari', '1234')->listUserGroups();
 * `$glpi->listEntities()` Return list of current entities defined by server configuration for the client
 * `$glpi->countEntities()` Return number of current entities defined by server configuration for the client
 * `$glpi->listKnowBaseItems()` *Not Implemented*
-* `$glpi->getDocument()` Retrieve a document if the authenticated user can view it
+* `$glpi->getDocument($document, $ticket = null, $id2name = false)` Retrieve a document if the authenticated user can view it
 
 ### Session
 * `$glpi->auth($glpi_user, $glpi_pass, $ws_user = null, $ws_pass = null)` Authenticate a user
@@ -67,8 +67,8 @@ $glpi->auth('vitor.bari', '1234')->listUserGroups();
 * `$glpi->addTicketObserver($ticket, $user = null)` Add a new observer to an existing ticket
 * `$glpi->setTicketSatisfaction($ticket, $satisfaction, $comment = null)` Answer to the ticket satisfaction survey
 * `$glpi->setTicketValidation($approval, $status, $comment = null)` Answer to a ticket approval request
-* `$glpi->setTicketSolution()` *Not Implemented*
-* `$glpi->setTicketAssign()` *Not Implemented*
+* `$glpi->setTicketSolution($ticket, $type, $solution)` Solution for a ticket
+* `$glpi->setTicketAssign($ticket, $user = null, $group = null, $supplier = null, $user_email = null, $use_email_notification = null)` Assign a ticket
 
 #### Dropdown
 * `$glpi->listDropdownValues($dropdown)` Search for values in a dropdown table

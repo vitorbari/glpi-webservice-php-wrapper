@@ -517,6 +517,64 @@ class GLPIWebservice
         return $this->service->call($args);
     }
 
+    /**
+     * Solution for a ticket
+     *
+     * @param $ticket : ID of the ticket, mandatory
+     * @param $solution : text of the solution, mandatory
+     * @param $type : id, type of the solution
+     * @return mixed
+     */
+    public function setTicketSolution($ticket, $solution, $type = null)
+    {
+        $args = array(
+            'method'   => 'glpi.setTicketSolution',
+            'session'  => $this->getSessionHash(),
+            'ticket'   => $ticket,
+            'solution' => $solution,
+        );
+
+        if (isset($type)) {
+            $args['type'] = $type;
+        }
+
+        return $this->service->call($args);
+    }
+
+    /**
+     * Assign a ticket
+     *
+     * @param $ticket : ID of the ticket, mandatory
+     * @param $user
+     * @param null $group
+     * @param null $supplier
+     * @param null $user_email
+     * @param null $use_email_notification
+     * @return mixed
+     */
+    public function setTicketAssign(
+        $ticket,
+        $user = null,
+        $group = null,
+        $supplier = null,
+        $user_email = null,
+        $use_email_notification = null
+    ) {
+        $args = array(
+            'method'  => 'glpi.setTicketAssign',
+            'session' => $this->getSessionHash(),
+            'ticket'  => $ticket
+        );
+
+        foreach (compact('user', 'group', 'supplier', 'user_email', 'use_email_notification') as $key => $value) {
+            if (isset($value)) {
+                $args[$key] = $value;
+            }
+        }
+
+        return $this->service->call($args);
+    }
+
     // ========================================
     // Dropdown
     // ========================================
@@ -595,8 +653,8 @@ class GLPIWebservice
     /**
      * Retrieve information on a existing object if the authenticated user is a super-admin.
      *
-     * @param $itemtype the object type
-     * @param $id the ID of object
+     * @param $itemtype: the object type
+     * @param $id: the ID of object
      * @param array $params (show_label / show_name)
      * @return mixed
      */
