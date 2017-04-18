@@ -31,11 +31,11 @@ $service = new Soap($soapClient);
 
 $glpi = new GLPIWebservice($service);
 
-$glpi->auth('vitor.bari', '1234');
+$glpi->auth('username', 'password');
 $glpi->listUserGroups();
 
 // You can use method chaining
-$glpi->auth('vitor.bari', '1234')->listUserGroups();
+$glpi->auth('username', 'password')->listUserGroups();
 ```
 
 ## Methods
