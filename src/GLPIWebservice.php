@@ -38,10 +38,8 @@ class GLPIWebservice
     private $session;
 
     /**
-     * Initiate this class with a subclass of ServiceInterface. There are two
-     * service subclasses available:
+     * Initiate this class with a subclass of ServiceInterface.
      * - Service\Soap: Service which makes calls to the GLPI Webservice
-     * - Service\Stub: Service stub for test purposes (unit tests)
      *
      * @param ServiceInterface $service
      */
@@ -86,21 +84,12 @@ class GLPIWebservice
      */
     public function auth($glpi_user, $glpi_pass, $ws_user = null, $ws_pass = null)
     {
-        $args = array(
-            'method'         => 'glpi.doLogin',
-            'login_name'     => $glpi_user,
-            'login_password' => $glpi_pass
+        $response = $this->service->auth(
+            $glpi_user,
+            $glpi_pass,
+            $ws_user,
+            $ws_pass
         );
-
-        if (isset($ws_user)) {
-            $args['username'] = $ws_user;
-        }
-
-        if (isset($ws_pass)) {
-            $args['password'] = $ws_pass;
-        }
-
-        $response = $this->service->call($args);
 
         $this->session = $response;
 
@@ -133,10 +122,10 @@ class GLPIWebservice
             'session' => $this->getSessionHash()
         );
 
-        if (isset($id2name)) {
+        if ($id2name) {
             $args['id2name'] = true;
         }
-
+        
         return $this->service->call($args);
     }
 
@@ -303,9 +292,11 @@ class GLPIWebservice
     /**
      * List the Tickets the current authenticated user can view.
      *
-     * @param null $status : 1 (new), 2 (assign), 3 (plan), 4 (waiting), 5 (solved), 'notold','old','process','all', 'notclosed'
+     * @param null $status : 1 (new), 2 (assign), 3 (plan), 4 (waiting), 5 (solved),
+     * 'notold','old','process','all','notclosed'
      * @param bool $id2name option to enable id to name translation of dropdown fields
-     * @param null $limit result will not contains more than # item. By default, limit is the GLPI configured value (list_limit_max)
+     * @param null $limit result will not contains more than # item. By default,
+     * limit is the GLPI configured value (list_limit_max)
      * @return mixed
      */
     public function listTickets($status = null, $id2name = false, $limit = null)
@@ -333,7 +324,8 @@ class GLPIWebservice
     /**
      * Count the Tickets the current authenticated user can view.
      *
-     * @param null $status : 1 (new), 2 (assign), 3 (plan), 4 (waiting), 5 (solved), 'notold','old','process','all', 'notclosed'
+     * @param null $status : 1 (new), 2 (assign), 3 (plan), 4 (waiting), 5 (solved),
+     * 'notold','old','process','all', 'notclosed'
      * @return int|null
      */
     public function countTickets($status = null)
@@ -401,7 +393,8 @@ class GLPIWebservice
      *
      * @param $ticket : ID of the ticket, mandatory
      * @param $content : of the new followup, mandatory
-     * @param $users_login : users login - if you want to check rights of user with checkApprobationSolution function for logged user not allowed, optional
+     * @param $users_login : users login - if you want to check rights of user with checkApprobationSolution
+     * function for logged user not allowed, optional
      * @param $source : name of the 'RequestType' (created if needed), optional, default WebServices
      * @param $private : optional boolean, default 0
      * @param $reopen : set ticket to working state (deny solution for "solved" ticket or answer for "waiting" ticket)
@@ -653,8 +646,8 @@ class GLPIWebservice
     /**
      * Retrieve information on a existing object if the authenticated user is a super-admin.
      *
-     * @param $itemtype: the object type
-     * @param $id: the ID of object
+     * @param $itemtype : the object type
+     * @param $id : the ID of object
      * @param array $params (show_label / show_name)
      * @return mixed
      */
