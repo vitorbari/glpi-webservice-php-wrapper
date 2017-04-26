@@ -103,7 +103,11 @@ class GLPIWebserviceTest extends \PHPUnit\Framework\TestCase
         $serviceMock->expects($this->once())->method('auth')
             ->will($this->returnValue(['name' => 'abc', 'session' => '1234']));
         $serviceMock->expects($this->once())->method('call')
-            ->with(['method' => 'glpi.getMyInfo', 'session' => '1234', 'id2name' => true])
+            ->with([
+                'method'  => 'glpi.getMyInfo',
+                'session' => '1234',
+                'id2name' => true
+            ])
             ->will($this->returnValue('output'));
 
         $glpi = new VitorBari\GLPIWebservice\GLPIWebservice($serviceMock);
@@ -171,5 +175,202 @@ class GLPIWebserviceTest extends \PHPUnit\Framework\TestCase
         $glpi   = new VitorBari\GLPIWebservice\GLPIWebservice($serviceMock);
         $output = $glpi->countEntities();
         $this->assertEquals(10, $output);
+    }
+
+    public function testGetDocumentUnauthenticated()
+    {
+        $serviceMock = $this->getServiceMock();
+        $serviceMock->expects($this->once())->method('call')
+            ->with([
+                'method'   => 'glpi.getDocument',
+                'document' => 1,
+                'session'  => null
+            ])
+            ->will($this->returnValue('output'));
+
+        $glpi   = new VitorBari\GLPIWebservice\GLPIWebservice($serviceMock);
+        $output = $glpi->getDocument(1);
+        $this->assertEquals('output', $output);
+    }
+
+    public function testGetDocumentWithTicketUnauthenticated()
+    {
+        $serviceMock = $this->getServiceMock();
+        $serviceMock->expects($this->once())->method('call')
+            ->with([
+                'method'   => 'glpi.getDocument',
+                'document' => 1,
+                'ticket'   => 1,
+                'session'  => null
+            ])
+            ->will($this->returnValue('output'));
+
+        $glpi   = new VitorBari\GLPIWebservice\GLPIWebservice($serviceMock);
+        $output = $glpi->getDocument(1, 1);
+        $this->assertEquals('output', $output);
+    }
+
+    public function testGetDocumentId2NameUnauthenticated()
+    {
+        $serviceMock = $this->getServiceMock();
+        $serviceMock->expects($this->once())->method('call')
+            ->with([
+                'method'   => 'glpi.getDocument',
+                'document' => 1,
+                'id2name'  => true,
+                'session'  => null
+            ])
+            ->will($this->returnValue('output'));
+
+        $glpi   = new VitorBari\GLPIWebservice\GLPIWebservice($serviceMock);
+        $output = $glpi->getDocument(1, null, true);
+        $this->assertEquals('output', $output);
+    }
+
+    public function testGetDocumentAuthenticated()
+    {
+        $serviceMock = $this->getServiceMock();
+        $serviceMock->expects($this->once())->method('auth')
+            ->will($this->returnValue(['name' => 'abc', 'session' => '1234']));
+        $serviceMock->expects($this->once())->method('call')
+            ->with([
+                'method'   => 'glpi.getDocument',
+                'document' => 1,
+                'session'  => '1234'
+            ])
+            ->will($this->returnValue('output'));
+
+        $glpi = new VitorBari\GLPIWebservice\GLPIWebservice($serviceMock);
+        $glpi->auth('abc', '1234');
+
+        $output = $glpi->getDocument(1);
+        $this->assertEquals('output', $output);
+    }
+
+    public function testGetDocumentWithTicketAuthenticated()
+    {
+        $serviceMock = $this->getServiceMock();
+        $serviceMock->expects($this->once())->method('auth')
+            ->will($this->returnValue(['name' => 'abc', 'session' => '1234']));
+        $serviceMock->expects($this->once())->method('call')
+            ->with([
+                'method'   => 'glpi.getDocument',
+                'document' => 1,
+                'ticket'   => 1,
+                'session'  => '1234'
+            ])
+            ->will($this->returnValue('output'));
+
+        $glpi = new VitorBari\GLPIWebservice\GLPIWebservice($serviceMock);
+        $glpi->auth('abc', '1234');
+
+        $output = $glpi->getDocument(1, 1);
+        $this->assertEquals('output', $output);
+    }
+
+    public function testGetDocumentId2NameAuthenticated()
+    {
+        $serviceMock = $this->getServiceMock();
+        $serviceMock->expects($this->once())->method('auth')
+            ->will($this->returnValue(['name' => 'abc', 'session' => '1234']));
+        $serviceMock->expects($this->once())->method('call')
+            ->with([
+                'method'   => 'glpi.getDocument',
+                'document' => 1,
+                'id2name'  => true,
+                'session'  => '1234'
+            ])
+            ->will($this->returnValue('output'));
+
+        $glpi = new VitorBari\GLPIWebservice\GLPIWebservice($serviceMock);
+        $glpi->auth('abc', '1234');
+
+        $output = $glpi->getDocument(1, null, true);
+        $this->assertEquals('output', $output);
+    }
+
+    public function testCreateTicket()
+    {
+        $serviceMock = $this->getServiceMock();
+        $serviceMock->expects($this->once())->method('auth')
+            ->will($this->returnValue(['name' => 'abc', 'session' => '1234']));
+        $serviceMock->expects($this->once())->method('call')
+            ->with([
+                'method'  => 'glpi.createTicket',
+                'session' => '1234',
+                'title'   => 'Title',
+                'content' => 'Foo',
+            ])
+            ->will($this->returnValue('output'));
+
+        $glpi = new VitorBari\GLPIWebservice\GLPIWebservice($serviceMock);
+        $glpi->auth('abc', '1234');
+
+        $output = $glpi->createTicket('Title', 'Foo');
+        $this->assertEquals('output', $output);
+    }
+
+    public function testCreateTicketWithAditionalParameters()
+    {
+        $serviceMock = $this->getServiceMock();
+        $serviceMock->expects($this->once())->method('auth')
+            ->will($this->returnValue(['name' => 'abc', 'session' => '1234']));
+        $serviceMock->expects($this->once())->method('call')
+            ->with([
+                'method'  => 'glpi.createTicket',
+                'session' => '1234',
+                'title'   => 'Title',
+                'content' => 'Foo',
+                'entity'  => 1,
+                'impact'  => 5
+            ])
+            ->will($this->returnValue('output'));
+
+        $glpi = new VitorBari\GLPIWebservice\GLPIWebservice($serviceMock);
+        $glpi->auth('abc', '1234');
+
+        $output = $glpi->createTicket('Title', 'Foo', ['entity' => 1, 'impact' => 5]);
+        $this->assertEquals('output', $output);
+    }
+
+    public function testGetTicket()
+    {
+        $serviceMock = $this->getServiceMock();
+        $serviceMock->expects($this->once())->method('auth')
+            ->will($this->returnValue(['name' => 'abc', 'session' => '1234']));
+        $serviceMock->expects($this->once())->method('call')
+            ->with([
+                'method'  => 'glpi.getTicket',
+                'session' => '1234',
+                'ticket'  => 1
+            ])
+            ->will($this->returnValue('output'));
+
+        $glpi = new VitorBari\GLPIWebservice\GLPIWebservice($serviceMock);
+        $glpi->auth('abc', '1234');
+
+        $output = $glpi->getTicket(1);
+        $this->assertEquals('output', $output);
+    }
+
+    public function testGetTicketId2Name()
+    {
+        $serviceMock = $this->getServiceMock();
+        $serviceMock->expects($this->once())->method('auth')
+            ->will($this->returnValue(['name' => 'abc', 'session' => '1234']));
+        $serviceMock->expects($this->once())->method('call')
+            ->with([
+                'method'  => 'glpi.getTicket',
+                'session' => '1234',
+                'ticket'  => 1,
+                'id2name' => true
+            ])
+            ->will($this->returnValue('output'));
+
+        $glpi = new VitorBari\GLPIWebservice\GLPIWebservice($serviceMock);
+        $glpi->auth('abc', '1234');
+
+        $output = $glpi->getTicket(1, true);
+        $this->assertEquals('output', $output);
     }
 }

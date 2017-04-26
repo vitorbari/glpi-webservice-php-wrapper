@@ -125,7 +125,7 @@ class GLPIWebservice
         if ($id2name) {
             $args['id2name'] = true;
         }
-        
+
         return $this->service->call($args);
     }
 
@@ -193,7 +193,6 @@ class GLPIWebservice
         ));
     }
 
-
     /**
      * Return number of current entities defined by server configuration for the client,
      * or currently activated for the user (when authenticated)
@@ -232,11 +231,14 @@ class GLPIWebservice
         $args = array(
             'method'   => 'glpi.getDocument',
             'session'  => $this->getOptionalSessionHash(),
-            'document' => $document,
-            'ticket'   => $ticket
+            'document' => $document
         );
 
-        if (isset($id2name)) {
+        if ($ticket) {
+            $args['ticket'] = $ticket;
+        }
+
+        if ($id2name) {
             $args['id2name'] = true;
         }
 
@@ -255,22 +257,25 @@ class GLPIWebservice
     /**
      * Create a new ticket
      *
+     * @param $title
+     * @param $content
      * @param array $params
      * @return mixed
      */
-    public function createTicket($params = array())
+    public function createTicket($title, $content, $params = array())
     {
         return $this->service->call(array(
                 'method'  => 'glpi.createTicket',
                 'session' => $this->getSessionHash(),
-                'mine'    => true
+                'title'   => $title,
+                'content' => $content
             ) + $params);
     }
 
     /**
      * Retrieve information on a existing ticket if the authenticated user can view it.
      *
-     * @param $ticket ID of the ticket
+     * @param int $ticket ID of the ticket
      * @param bool $id2name option to enable id to name translation of dropdown fields
      * @return mixed
      */
@@ -282,7 +287,7 @@ class GLPIWebservice
             'ticket'  => $ticket
         );
 
-        if (isset($id2name)) {
+        if ($id2name) {
             $args['id2name'] = true;
         }
 
@@ -310,7 +315,7 @@ class GLPIWebservice
             $args['status'] = $status;
         }
 
-        if (isset($id2name)) {
+        if ($id2name) {
             $args['id2name'] = true;
         }
 
