@@ -1,6 +1,9 @@
 # glpi-webservice-php-wrapper
 
+[![Build Status](https://travis-ci.org/vitorbari/glpi-webservice-php-wrapper.svg?branch=master)](https://travis-ci.org/vitorbari/glpi-webservice-php-wrapper)
 [![StyleCI](https://styleci.io/repos/51149054/shield)](https://styleci.io/repos/51149054)
+[![Coverage Status](https://coveralls.io/repos/github/vitorbari/glpi-webservice-php-wrapper/badge.svg?branch=master)](https://coveralls.io/github/vitorbari/glpi-webservice-php-wrapper?branch=master)
+
 
 <a name="introduction"></a>
 ## Introduction
