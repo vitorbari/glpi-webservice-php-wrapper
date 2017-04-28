@@ -21,7 +21,7 @@ class NotAuthenticatedExceptionTest extends \PHPUnit\Framework\TestCase
     public function testExceptionDefaultMessage()
     {
         try {
-            throw new VitorBari\GLPIWebservice\Exceptions\NotAuthenticatedException();
+            throw new VitorBari\GLPIWebservice\Exceptions\NotAuthenticatedException('You are not authenticated.');
         } catch (Exception $ex) {
             $this->assertEquals('You are not authenticated.', $ex->getMessage());
         }

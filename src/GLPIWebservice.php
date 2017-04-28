@@ -684,7 +684,7 @@ class GLPIWebservice
         }
 
         if ($throw_exception) {
-            throw new NotAuthenticatedException;
+            throw new NotAuthenticatedException('You are not authenticated.');
         }
 
         return false;
