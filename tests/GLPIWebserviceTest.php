@@ -373,4 +373,45 @@ class GLPIWebserviceTest extends \PHPUnit\Framework\TestCase
         $output = $glpi->getTicket(1, true);
         $this->assertEquals('output', $output);
     }
+
+    public function testListTickets()
+    {
+        $serviceMock = $this->getServiceMock();
+        $serviceMock->expects($this->once())->method('auth')
+            ->will($this->returnValue(['name' => 'abc', 'session' => '1234']));
+        $serviceMock->expects($this->once())->method('call')
+            ->with([
+                'method'  => 'glpi.listTickets',
+                'session' => '1234'
+            ])
+            ->will($this->returnValue('output'));
+
+        $glpi = new VitorBari\GLPIWebservice\GLPIWebservice($serviceMock);
+        $glpi->auth('abc', '1234');
+
+        $output = $glpi->listTickets();
+        $this->assertEquals('output', $output);
+    }
+
+    public function testListTicketsWithParameters()
+    {
+        $serviceMock = $this->getServiceMock();
+        $serviceMock->expects($this->once())->method('auth')
+            ->will($this->returnValue(['name' => 'abc', 'session' => '1234']));
+        $serviceMock->expects($this->once())->method('call')
+            ->with([
+                'method'  => 'glpi.listTickets',
+                'session' => '1234',
+                'status'  => 1,
+                'id2name' => true,
+                'limit'   => 10
+            ])
+            ->will($this->returnValue('output'));
+
+        $glpi = new VitorBari\GLPIWebservice\GLPIWebservice($serviceMock);
+        $glpi->auth('abc', '1234');
+
+        $output = $glpi->listTickets(1, true, 10);
+        $this->assertEquals('output', $output);
+    }
 }
