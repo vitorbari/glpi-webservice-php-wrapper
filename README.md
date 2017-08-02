@@ -29,7 +29,7 @@ use VitorBari\GLPIWebservice\GLPIWebservice;
 // Create soap adapter
 // Currently, only soap is implemented, but the plugin also supports XMLRPC and REST
 $endpoint = 'http://[glpi-url]/plugins/webservices/soap.php';
-$soapClient = new SoapClient(null, array('uri' => $endpoint, 'location' => $endpoint))
+$soapClient = new SoapClient(null, array('uri' => $endpoint, 'location' => $endpoint));
 $service = new Soap($soapClient);
 
 $glpi = new GLPIWebservice($service);
@@ -62,7 +62,7 @@ $glpi->auth('username', 'password')->listUserGroups();
 
 #### Ticket
 * `$glpi->getTicket($ticket, $id2name=false)` Retrieve information on a existing ticket if the authenticated user can view it
-* `$glpi->createTicket($params = array())` Create a new ticket
+* `$glpi->createTicket($title, $content, $params = array())` Create a new ticket
 * `$glpi->listTickets($status=null, $id2name=false)` List the Tickets the current authenticated user can view
 * `$glpi->countTickets($status=null)` Count the Tickets the current authenticated user can view
 * `$glpi->addTicketDocument($ticket, $name, $uri = null, $base64 = null, $content = null)` Add a document to an existing ticket if the authenticated user can edit it
